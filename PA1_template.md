@@ -9,7 +9,8 @@ Make a histogram of the total number of steps taken each day
 Calculate and report the mean and median total number of steps taken per day
 
 
-```{r}
+
+```r
 #load libraries
 library(stats)
 library(lattice)
@@ -29,15 +30,28 @@ stday<-ddply(d,"date",summarize,sum(steps,na.rm=TRUE))
 names(stday)<-c("date","totsteps")
 
 mean(stday$totsteps)
+```
+
+```
+## [1] 9354
+```
+
+```r
 median(stday$totsteps)
+```
+
+```
+## [1] 10395
 ```
 
 PLOT HISTOGRAM
 
-```{r fig.width=7, fig.height=6}
-histogram(~totsteps, data=stday)
 
+```r
+histogram(~totsteps, data=stday)
 ```
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
 
 What is the average daily activity pattern?
 ================================================
@@ -46,7 +60,8 @@ Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and 
 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 
-```{r}
+
+```r
 #What is the average daily activity pattern?
 intsteps<-ddply(d,"interval",summarize,mean(steps,na.rm=TRUE))
 names(intsteps)<-c("interval","meansteps")
@@ -55,11 +70,18 @@ names(intsteps)<-c("interval","meansteps")
 #what is the interval that has the maximum number of steps
 which.max(intsteps$meansteps)
 ```
+
+```
+## [1] 104
+```
 TIME SERIES PLOT
 
-```{r fig.width=7, fig.height=6}
+
+```r
 plot(intsteps$interval,intsteps$meansteps,type="l")
 ```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
 
 Imputing missing values
 ====================================================
@@ -74,13 +96,20 @@ Create a new dataset that is equal to the original dataset but with the missing 
 Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 
-```{r}
+
+```r
 #Imputing missing values
 y<-na.omit(d)
 
 # the difference in length gives the number of rows with NA
 length(d$steps)-length(y$steps)
+```
 
+```
+## [1] 2304
+```
+
+```r
 #make copy of dataset call it zz
 zz<-d
 
@@ -110,15 +139,27 @@ names(stday1)<-c("date","totsteps")
 #now calculate mean and median
 
 mean(stday1$totsteps)
-median(stday1$totsteps)
+```
 
+```
+## [1] 10766
+```
+
+```r
+median(stday1$totsteps)
+```
+
+```
+## [1] 10766
 ```
 
 Plot a new Histogram using the imputed values
-```{r fig.width=7, fig.height=6}
-histogram(~totsteps, data=stday1)
 
+```r
+histogram(~totsteps, data=stday1)
 ```
+
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
 There are some subtle differences in mean median and histogram. For elusive reasons the mean and median are not calculate correctly here but they are when I run them in r
 ================================================
 
@@ -127,11 +168,12 @@ Are there differences in activity patterns between weekdays and weekends?
 
 For this part the weekdays() function may be of some help here. Use the dataset with the filled-in missing values for this part.
 
-Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+Create a new factor variable in the dataset with two levels  weekday and weekend indicating whether a given date is a weekday or weekend day.
 
 Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using simulated data:
 
-```{r}
+
+```r
 #Are there differences in activity patterns between weekdays and weekends?
 #I already used the weekdays function above
 #Now do a loop that calls days with saturday and sunday #weekends and other days weekdays
@@ -154,6 +196,9 @@ names(intstepstype)<-c("interval","type","meansteps")
 
 Plot this
 
-```{r fig.width=7, fig.height=6}
+
+```r
 with(intstepstype,xyplot(meansteps~interval|type,layout=c(1,2),type="l"))
 ```
+
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
